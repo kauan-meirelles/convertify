@@ -1,0 +1,112 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 210 40% 96%;
+        --foreground: 222 47% 11%;
+        --card: 0 0% 100%;
+        --card-foreground: 222 47% 11%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222 47% 11%;
+        --primary: 21 90% 48%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 214 32% 91%;
+        --secondary-foreground: 222 47% 11%;
+        --muted: 214 32% 91%;
+        --muted-foreground: 215 19% 35%;
+        --accent: 262 83% 58%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 0 72% 51%;
+        --destructive-foreground: 0 0% 100%;
+        --success: 161 94% 30%;
+        --border: 214 25% 85%;
+        --input: 214 25% 85%;
+        --ring: 21 90% 48%;
+        --radius: 0.85rem;
+    }
+    .dark {
+        --background: 220 35% 7%;
+        --foreground: 210 40% 98%;
+        --card: 218 31% 11%;
+        --card-foreground: 210 40% 98%;
+        --popover: 218 31% 11%;
+        --popover-foreground: 210 40% 98%;
+        --primary: 20 100% 50%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 218 29% 16%;
+        --secondary-foreground: 210 40% 98%;
+        --muted: 218 29% 16%;
+        --muted-foreground: 215 20% 65%;
+        --accent: 258 90% 66%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 100%;
+        --success: 160 84% 39%;
+        --border: 218 20% 20%;
+        --input: 218 20% 20%;
+        --ring: 20 100% 50%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-family: "DM Sans", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    h1, h2, h3, .font-display {
+        font-family: "Plus Jakarta Sans", sans-serif;
+    }
+    .font-mono, code {
+        font-family: "JetBrains Mono", monospace;
+    }
+    ::selection {
+        background: hsl(var(--primary) / 0.35);
+    }
+}
+
+.grain::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.grid-bg {
+    background-image: linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+        linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at top left, black 20%, transparent 70%);
+}
+
+@keyframes eq {
+    0%, 100% { transform: scaleY(0.25); }
+    50% { transform: scaleY(1); }
+}
+.eq-bar {
+    transform-origin: bottom;
+    animation: eq 1.2s ease-in-out infinite;
+}
+
+@keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.rise {
+    animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .eq-bar, .rise { animation: none; }
+}

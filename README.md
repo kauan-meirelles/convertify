@@ -1,64 +1,44 @@
-# 🎧 Convertify
+# Convertify
 
-Convertify é um conversor de áudio simples desenvolvido em **Java** que permite converter arquivos de áudio entre diferentes formatos, como **MP3**, **M4A**, **WAV**, **OGG** e **FLAC**. O projeto utiliza o **FFmpeg**, uma poderosa biblioteca de conversão de mídia, para realizar as conversões de maneira eficiente. 🎵
+Conversor de áudio em lote. Arraste vários arquivos, escolha o formato e a qualidade, e baixe tudo de uma vez — individualmente ou em um ZIP. A conversão é feita com FFmpeg no servidor.
 
-## Funcionalidades
+**Formatos de saída:** MP3, WAV, M4A, OGG, FLAC, OPUS
+**Entrada:** mp3, wav, m4a, ogg, flac, aac, wma, opus, aiff, webm, mp4 (até 200 MB por arquivo)
 
-- 🔄 Conversão de arquivos de áudio entre os formatos: **MP3**, **M4A**, **WAV**, **OGG** e **FLAC**.
-- 🖥️ Interface gráfica simples e intuitiva construída com **Swing**.
-- 📂 Suporte a seleção de arquivos de entrada e saída diretamente pela interface.
-- 📊 Exibição de mensagens de progresso e status durante a conversão.
+## Stack
 
-## Requisitos
+- **Frontend:** React 19, Tailwind CSS, shadcn/ui, craco
+- **Backend:** FastAPI, MongoDB (motor), FFmpeg via `imageio-ffmpeg`
+- **Armazenamento:** arquivos salvos localmente em `backend/storage/`
 
-Para rodar este projeto, você precisa ter o **FFmpeg** instalado em seu computador. Siga os passos abaixo para configurar:
+## Como rodar
 
-### 1. Baixar o FFmpeg
+### Backend
 
-   - 🌐 Acesse [FFmpeg.org](https://ffmpeg.org/download.html) e baixe a versão apropriada para o seu sistema operacional.
-   - 📂 Extraia o conteúdo do arquivo baixado em uma pasta de sua escolha.
+```bash
+cd backend
+pip install fastapi==0.110.1 uvicorn==0.25.0 motor==3.7.1 python-dotenv python-multipart imageio-ffmpeg dnspython
+cp .env.example .env   # preencha MONGO_URL com sua conexão do MongoDB
+python -m uvicorn server:app --reload --port 8001
+```
 
-### 2. Definir o Caminho do FFmpeg no Projeto
+### Frontend
 
-   - No código, altere o caminho para o executável do FFmpeg para apontar para o local onde você extraiu o FFmpeg. O caminho padrão no código é:
-     ```java
-     String ffmpegPath = "C:\\ffmpeg-master-latest-win64-gpl\\ffmpeg-master-latest-win64-gpl\\bin\\ffmpeg.exe";
-     ```
-   - Certifique-se de que o caminho do FFmpeg está correto para o seu sistema.
+```bash
+cd frontend
+cp .env.example .env
+npm install
+npm start
+```
 
-## Como Usar
+Abra http://localhost:3000.
 
-1. **Abra o Convertify**: Compile e execute o projeto no NetBeans ou em sua IDE de preferência. 💻
-2. **Selecione um Arquivo de Áudio**: Escolha o arquivo de áudio que deseja converter. 🎶
-3. **Escolha o Formato de Saída**: Selecione o formato de áudio para o qual deseja converter (MP3, M4A, WAV, OGG ou FLAC). 🔄
-4. **Defina o Diretório de Saída**: Escolha a pasta onde o arquivo convertido será salvo. 📂
-5. **Inicie a Conversão**: Clique no botão de conversão e aguarde até que a conversão seja concluída. ⏳
-6. **Verifique o Resultado**: O arquivo convertido será salvo no diretório de saída. ✅
+## API
 
-## Como Contribuir
-
-1. 🍴 Faça um **fork** deste repositório.
-2. 🌱 Crie uma branch para sua alteração (`git checkout -b feature-nome-da-feature`).
-3. 💻 Faça o **commit** das suas alterações (`git commit -am 'Adicionar nova funcionalidade'`).
-4. 🚀 **Push** para a branch do seu fork (`git push origin feature-nome-da-feature`).
-5. 🔄 Abra um **pull request**.
-
-## Licença
-
-Este projeto está licenciado sob a Licença MIT - consulte o arquivo [LICENSE](LICENSE) para mais detalhes. 📄
-
-## Agradecimentos
-
-- 🎬 **FFmpeg**: Para conversão de mídia de alta performance.
-- 🖥️ **NetBeans**: Para o desenvolvimento da interface gráfica do projeto.
-- ☕ **Java**: Pela poderosa plataforma de desenvolvimento.
-
-## Demonstração
-
-![convertify](https://github.com/user-attachments/assets/8921acfa-21b3-4a9a-97b8-ea51d4c6afb0)
-
-
-
----
-
-Se você tiver dúvidas ou sugestões, fique à vontade para abrir uma issue ou enviar um pull request. 😊
+| Método | Rota | Descrição |
+| --- | --- | --- |
+| `POST` | `/api/jobs` | Envia um arquivo e inicia a conversão |
+| `GET` | `/api/jobs/{id}` | Status, progresso e log da conversão |
+| `GET` | `/api/jobs/{id}/download` | Baixa o arquivo convertido |
+| `POST` | `/api/jobs/zip` | Baixa vários arquivos convertidos em ZIP |
+| `DELETE` | `/api/jobs/{id}` | Remove uma conversão |
